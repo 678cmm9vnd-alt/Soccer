@@ -63,12 +63,15 @@ html,body{
 
 /* ---------- overlays ---------- */
 .screen{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:calc(22px + env(safe-area-inset-top,0px)) 22px calc(22px + env(safe-area-inset-bottom,0px));
+  position:absolute;inset:0;display:block;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
   background:radial-gradient(120% 80% at 50% 0%,rgba(12,26,48,.70),rgba(3,5,10,.94));
-  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);text-align:center;gap:10px;
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);text-align:center;
 }
 .screen.hidden{display:none}
+.screen-inner{
+  min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  padding:calc(22px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px));
+}
 .ball-badge{font-size:clamp(38px,12vw,60px);line-height:1;filter:drop-shadow(0 0 22px rgba(198,255,69,.55))}
 h1{font-size:clamp(28px,9vw,46px);font-weight:900;letter-spacing:-1.5px;line-height:1.05}
 h1 span{color:var(--lime)}
@@ -117,6 +120,80 @@ h1 span{color:var(--lime)}
   background:rgba(198,255,69,.12);border:1px solid rgba(198,255,69,.42);color:#ddffa0;
 }
 .badge.none{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#7c8ea6}
+
+/* ---------- player id ---------- */
+.nick-row{display:flex;flex-direction:column;align-items:center;gap:5px;width:min(340px,88vw);margin-top:2px}
+.nick-label{font-size:9.5px;font-weight:900;letter-spacing:2.5px;color:#8fa3bd}
+.nick-field{position:relative;width:100%}
+#nickInput{
+  width:100%;padding:13px 52px 13px 16px;border-radius:14px;border:1px solid rgba(198,255,69,.45);
+  background:rgba(8,16,26,.78);color:#fff;font-family:inherit;font-size:16px;font-weight:800;
+  text-align:center;letter-spacing:.5px;outline:none;
+  -webkit-user-select:text;user-select:text;touch-action:manipulation;
+}
+#nickInput::placeholder{color:#5d6f88;font-weight:700;letter-spacing:0}
+#nickInput:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(198,255,69,.16)}
+.nick-count{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;color:#6d7f99;font-variant-numeric:tabular-nums}
+
+/* ---------- ranking board ---------- */
+.rank-panel{
+  width:min(380px,94vw);margin-top:8px;padding:10px 10px 8px;text-align:left;
+  background:rgba(8,14,24,.74);border:1px solid rgba(255,255,255,.1);border-radius:16px;
+}
+.rank-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:900;color:#dbe7ff}
+.rank-head .grow{flex:1 1 auto;min-width:4px}
+.rank-state{font-size:9.5px;font-weight:800;letter-spacing:.2px;color:#7fd4ff;white-space:nowrap}
+.rank-state.local{color:#ffcf6b}
+.rank-state.busy{color:#9fb4d0}
+.rank-refresh{border:0;background:none;color:#93a7c0;font-family:inherit;font-size:15px;line-height:1;cursor:pointer;padding:2px 3px;border-radius:8px}
+.rank-refresh:active{transform:scale(.9);color:#c6ff45}
+.rank-cols,.rank-row{display:grid;grid-template-columns:24px minmax(0,1fr) 54px 40px 30px;gap:5px;align-items:center}
+.rank-cols{margin:7px 0 2px;padding:0 4px;font-size:9px;font-weight:800;letter-spacing:.3px;color:#7285a0}
+.rank-cols i{font-style:normal;text-align:right}
+.rank-rows{max-height:212px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rank-row{padding:5px 4px;border-radius:9px;font-size:12px;font-weight:800;color:#dce8f8}
+.rank-row+.rank-row{margin-top:1px}
+.rank-row .pos{color:#8fa3bd;font-variant-numeric:tabular-nums}
+.rank-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-row .sc{text-align:right;color:#eaffb0;font-variant-numeric:tabular-nums}
+.rank-row .gl{text-align:right;color:#9fb4d0;font-variant-numeric:tabular-nums;font-size:11.5px}
+.rank-row .gr{text-align:right;color:#63f1ff;font-size:11.5px}
+.rank-row.me{background:rgba(198,255,69,.15);box-shadow:inset 0 0 0 1px rgba(198,255,69,.5)}
+.rank-row.me .nm{color:#f4ffdd}
+.rank-row.top .pos{color:#ffd34d}
+.rank-gap{padding:2px 4px;font-size:10px;font-weight:800;color:#5d6f88;letter-spacing:2px;text-align:center}
+.rank-empty{padding:12px 4px 10px;font-size:11px;line-height:1.5;font-weight:700;color:#7c8ea6}
+.rank-foot{margin-top:6px;font-size:9.5px;font-weight:700;line-height:1.4;color:#6d7f99;letter-spacing:.2px}
+
+/* ---------- end screen extras ---------- */
+.myrank{display:flex;align-items:baseline;justify-content:center;gap:6px;font-size:12px;font-weight:800;color:#9fb4d0;margin-top:1px}
+.myrank.hidden{display:none}
+.myrank b{font-size:17px;font-weight:900;color:var(--lime);letter-spacing:-.5px}
+.myrank .sub2{font-size:10.5px;font-weight:800;color:#7c8ea6}
+.endbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:2px}
+.ghost{
+  pointer-events:auto;cursor:pointer;font-family:inherit;font-size:12px;font-weight:800;
+  padding:10px 15px;border-radius:999px;color:#dbe7ff;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+}
+.ghost:active{transform:scale(.96)}
+.challenge{
+  width:min(360px,92vw);padding:9px 12px;border-radius:14px;text-align:center;
+  font-size:11.5px;font-weight:800;line-height:1.45;color:#c9f6ff;
+  background:linear-gradient(180deg,rgba(99,241,255,.18),rgba(99,241,255,.05));
+  border:1px solid rgba(99,241,255,.42);
+}
+.challenge.hidden{display:none}
+.challenge b{color:#fff}
+.challenge .vs{display:block;font-size:9.5px;letter-spacing:2px;color:#7fd4ff;margin-bottom:2px}
+.toast{
+  position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:60;
+  transform:translateX(-50%) translateY(16px);opacity:0;pointer-events:none;
+  padding:10px 18px;border-radius:999px;font-size:12px;font-weight:800;color:#eaffb0;
+  background:rgba(10,20,32,.96);border:1px solid rgba(198,255,69,.5);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);transition:opacity .18s,transform .18s;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -125,26 +202,45 @@ h1 span{color:var(--lime)}
 
 
   <div id="startScreen" class="screen">
+   <div class="screen-inner">
     <div class="ball-badge">⚽</div>
     <h1>감아차기 <span>프리킥</span></h1>
     <div class="sub">60초 타임어택 · 1분 승부차기</div>
+    <div id="challenge" class="challenge hidden"></div>
+    <div class="nick-row nodismiss">
+      <div class="nick-label">PLAYER ID</div>
+      <div class="nick-field">
+        <input id="nickInput" type="text" maxlength="12" placeholder="아이디(닉네임)" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-label="플레이어 아이디(닉네임)">
+        <span class="nick-count" id="nickCount">0/12</span>
+      </div>
+    </div>
     <div class="tips">
       <div class="tip"><b>드래그</b><span>공에서 골대 쪽으로 밀듯이 휘두르세요</span></div>
       <div class="tip"><b>감아차기</b><span>드래그 선을 활처럼 휘면 공이 크게 감깁니다</span></div>
       <div class="tip"><b>황금 타겟</b><span>명중하면 +5초 &amp; 점수 2배</span></div>
     </div>
-    <button id="startBtn" class="cta">킥오프</button>
+    <button id="startBtn" class="cta nodismiss">킥오프</button>
     <div class="best">최고 기록 <b id="bestStart">0</b>점</div>
+    <div id="rankStart" class="rank-panel nodismiss"></div>
+   </div>
   </div>
 
   <div id="endScreen" class="screen hidden">
+   <div class="screen-inner">
     <div class="grade-label">FULL TIME</div>
     <div id="grade" class="grade">A</div>
     <div class="final"><b id="finalScore">0</b>점</div>
+    <div id="myRank" class="myrank hidden"></div>
     <div id="newBest" class="newbest hidden">NEW BEST!</div>
     <div id="statsGrid" class="stats"></div>
     <div id="badges" class="badges"></div>
-    <button id="retryBtn" class="cta">다시 하기</button>
+    <button id="retryBtn" class="cta nodismiss">다시 하기</button>
+    <div class="endbtns nodismiss">
+      <button id="shareBtn" class="ghost" type="button">📤 도전장 링크 복사</button>
+      <button id="rankOpenBtn" class="ghost" type="button">🏆 랭킹 새로고침</button>
+    </div>
+    <div id="rankEnd" class="rank-panel nodismiss"></div>
+   </div>
   </div>
 
   <div id="hud">
@@ -159,6 +255,8 @@ h1 span{color:var(--lime)}
     </div>
     <button id="muteBtn" aria-label="소리 켜기/끄기">🔊</button>
   </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </div>
 
 <script>
@@ -208,7 +306,16 @@ var el = {
   badges: $('badges'),
   newBest: $('newBest'),
   startBtn: $('startBtn'),
-  retryBtn: $('retryBtn')
+  retryBtn: $('retryBtn'),
+  nick: $('nickInput'),
+  nickCount: $('nickCount'),
+  rankStart: $('rankStart'),
+  rankEnd: $('rankEnd'),
+  myRank: $('myRank'),
+  challenge: $('challenge'),
+  shareBtn: $('shareBtn'),
+  rankOpenBtn: $('rankOpenBtn'),
+  toast: $('toast')
 };
 
 /* ============================================================
@@ -365,6 +472,7 @@ var cam = {
 
 var G = {
   state: 'menu',        // menu | aim | flight | result | over
+  nick: '',
   time: 60,
   score: 0,
   best: 0,
@@ -782,6 +890,15 @@ function startGame() {
   Sound.init();
   Sound.resume();
 
+  G.nick = nickCurrent();
+  var typed = el.nick ? nickClean(el.nick.value) : '';
+  if (typed) nickRemember(typed); else RANK.myNick = G.nick;
+  if (el.nick) {
+    el.nick.value = G.nick;
+    nickFieldSync();
+    if (el.nick.blur) el.nick.blur();
+  }
+
   G.state = 'aim';
   G.time = 60;
   G.score = 0;
@@ -886,6 +1003,8 @@ function endGame() {
   if (el.end) el.end.classList.remove('hidden');
   if (el.hud) el.hud.classList.add('dim');
   if (el.bestStart) el.bestStart.textContent = String(G.best);
+
+  rankSubmit({ n: G.nick || nickCurrent(), s: G.score, g: G.goals, sh: G.shots, gr: grade, t: Date.now() });
 
   Sound.whistle();
   updateHud(true);
@@ -1971,6 +2090,403 @@ var vignette = null;
 var vignetteKey = '';
 
 /* ============================================================
+   11.5 player id + shared ranking
+   ------------------------------------------------------------
+   Online board: restful-api.dev free public REST API (no key,
+   CORS: *). Verified POST/GET/PUT from the browser. If the API
+   is unreachable the board falls back to this device's records.
+   No secret or token is stored in this page.
+   ============================================================ */
+var NICK_KEY = 'freekick_nick';
+var RANK_KEY = 'freekick_rank_v1';
+
+var RANK = {
+  id: 'ff808181a09d98f701a1ed2db03019a4',
+  base: 'https://api.restful-api.dev/objects/',
+  name: 'freekick-arcade-ranking',
+  max: 50,
+  entries: [],
+  online: null,      // null unknown | true online | false this device only
+  busy: false,
+  err: '',
+  lastSync: 0,
+  myNick: ''
+};
+
+function nickClean(v) {
+  var s = String(v == null ? '' : v).replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (s.length > 12) s = s.slice(0, 12);
+  return s;
+}
+function nickCurrent() {
+  var v = el.nick ? nickClean(el.nick.value) : '';
+  return v || nickClean(RANK.myNick) || '무명선수';
+}
+function nickRemember(v) {
+  RANK.myNick = v;
+  store(NICK_KEY, v);
+}
+
+function rankCompare(a, b) {
+  if (b.s !== a.s) return b.s - a.s;
+  if (b.g !== a.g) return b.g - a.g;
+  return (a.t || 0) - (b.t || 0);
+}
+
+/* keep one best row per nickname, sorted, capped */
+function rankNormalize(list) {
+  var map = {}, out = [], i, e, n, k;
+  if (!list || !list.length) return out;
+  for (i = 0; i < list.length; i++) {
+    e = list[i];
+    if (!e || typeof e !== 'object') continue;
+    n = nickClean(e.n);
+    if (!n) continue;
+    var s = Math.max(0, Math.min(999999, parseInt(e.s, 10) || 0));
+    var g = Math.max(0, Math.min(999, parseInt(e.g, 10) || 0));
+    var sh = Math.max(0, Math.min(999, parseInt(e.sh, 10) || 0));
+    var gr = String(e.gr || '').replace(/[<>]/g, '').slice(0, 3);
+    var t = parseInt(e.t, 10) || 0;
+    k = n.toLowerCase();
+    var old = map[k];
+    if (!old || s > old.s || (s === old.s && g > old.g)) {
+      map[k] = { n: n, s: s, g: g, sh: sh, gr: gr, t: t || (old ? old.t : 0) };
+    }
+  }
+  for (k in map) if (Object.prototype.hasOwnProperty.call(map, k)) out.push(map[k]);
+  out.sort(rankCompare);
+  return out.slice(0, RANK.max);
+}
+
+function rankLoadLocal() {
+  try {
+    var v = JSON.parse(load(RANK_KEY, '[]'));
+    return Object.prototype.toString.call(v) === '[object Array]' ? v : [];
+  } catch (e) { return []; }
+}
+function rankSaveLocal(list) {
+  try { store(RANK_KEY, JSON.stringify(list || [])); } catch (e) { /* ignore */ }
+}
+
+function rankTimeout(ms) {
+  if (typeof AbortController === 'function') {
+    var c = new AbortController();
+    var id = setTimeout(function () { try { c.abort(); } catch (e) { /* ignore */ } }, ms);
+    return { signal: c.signal, done: function () { clearTimeout(id); } };
+  }
+  return { signal: null, done: function () {} };
+}
+
+function rankNetGet() {
+  var t = rankTimeout(9000);
+  return fetch(RANK.base + RANK.id, { method: 'GET', cache: 'no-store', signal: t.signal })
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (obj) {
+      t.done();
+      var d = obj && obj.data;
+      return (d && d.scores) ? d.scores : [];
+    }, function (e) { t.done(); throw e; });
+}
+
+function rankNetPut(list) {
+  var t = rankTimeout(9000);
+  var body = JSON.stringify({ name: RANK.name, data: { v: 1, scores: list, updated: Date.now() } });
+  return fetch(RANK.base + RANK.id, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: body,
+    signal: t.signal
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (o) { t.done(); return o; }, function (e) { t.done(); throw e; });
+}
+
+function rankFetch() {
+  if (RANK.busy) return;
+  RANK.busy = true;
+  rankRender();
+  rankNetGet().then(function (remote) {
+    RANK.online = true;
+    RANK.err = '';
+    RANK.lastSync = Date.now();
+    RANK.entries = rankNormalize(rankNormalize(remote).concat(RANK.entries, rankLoadLocal()));
+    rankSaveLocal(RANK.entries);
+  }, function (e) {
+    RANK.online = false;
+    RANK.err = String((e && e.message) || e);
+  }).then(function () {
+    RANK.busy = false;
+    rankRender();
+  });
+}
+
+function rankSubmit(entry) {
+  var mine = rankNormalize([entry])[0];
+  if (!mine) return;
+  nickRemember(mine.n);
+  RANK.entries = rankNormalize([mine].concat(RANK.entries, rankLoadLocal()));
+  rankSaveLocal(RANK.entries);
+  rankRender();
+  rankPush(0);
+}
+
+function rankPush(attempt) {
+  RANK.busy = true;
+  rankRender();
+  rankNetGet().then(function (remote) {
+    var list = rankNormalize((remote || []).concat(RANK.entries));
+    return rankNetPut(list).then(function () {
+      RANK.entries = list;
+      rankSaveLocal(list);
+      RANK.online = true;
+      RANK.err = '';
+      RANK.lastSync = Date.now();
+    });
+  }).catch(function (e) {
+    RANK.err = String((e && e.message) || e);
+    if (attempt < 1) {
+      setTimeout(function () { rankPush(attempt + 1); }, 1200);
+      return;
+    }
+    RANK.online = false;
+  }).then(function () {
+    RANK.busy = false;
+    rankRender();
+  });
+}
+
+function rankIndexOf(list, nick) {
+  var k = String(nick || '').toLowerCase(), i;
+  for (i = 0; i < list.length; i++) {
+    if (list[i].n.toLowerCase() === k) return i;
+  }
+  return -1;
+}
+
+function rankStateInfo() {
+  if (RANK.busy) return { t: '동기화 중…', c: 'busy' };
+  if (RANK.online === true) return { t: '🌐 온라인 공유', c: '' };
+  if (RANK.online === false) return { t: '📱 이 기기 기록', c: 'local' };
+  return { t: '불러오는 중…', c: 'busy' };
+}
+
+function rankRowEl(entry, idx) {
+  var me = RANK.myNick && entry.n.toLowerCase() === RANK.myNick.toLowerCase();
+  var row = document.createElement('div');
+  row.className = 'rank-row' + (me ? ' me' : '') + (idx < 3 ? ' top' : '');
+  if (me) row.setAttribute('aria-current', 'true');
+
+  var pos = document.createElement('span');
+  pos.className = 'pos';
+  pos.textContent = idx < 3 ? ['🥇', '🥈', '🥉'][idx] : String(idx + 1);
+
+  var nm = document.createElement('span');
+  nm.className = 'nm';
+  nm.textContent = entry.n + (me ? ' (나)' : '');
+
+  var sc = document.createElement('span');
+  sc.className = 'sc';
+  sc.textContent = String(entry.s);
+
+  var gl = document.createElement('span');
+  gl.className = 'gl';
+  gl.textContent = (entry.g || 0) + '골';
+
+  var gr = document.createElement('span');
+  gr.className = 'gr';
+  gr.textContent = entry.gr || '-';
+
+  row.appendChild(pos); row.appendChild(nm); row.appendChild(sc); row.appendChild(gl); row.appendChild(gr);
+  return row;
+}
+
+function rankBuildPanel(panel) {
+  if (!panel) return;
+  while (panel.firstChild) panel.removeChild(panel.firstChild);
+
+  var head = document.createElement('div');
+  head.className = 'rank-head';
+  var ttl = document.createElement('span');
+  ttl.textContent = '🏆 랭킹 보드';
+  var st = rankStateInfo();
+  var state = document.createElement('span');
+  state.className = 'rank-state' + (st.c ? ' ' + st.c : '');
+  state.textContent = st.t;
+  var grow = document.createElement('span');
+  grow.className = 'grow';
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'rank-refresh';
+  btn.textContent = '↻';
+  btn.title = '랭킹 새로고침';
+  btn.setAttribute('aria-label', '랭킹 새로고침');
+  btn.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    rankFetch();
+  });
+  head.appendChild(ttl); head.appendChild(grow); head.appendChild(state); head.appendChild(btn);
+  panel.appendChild(head);
+
+  if (!RANK.entries.length) {
+    var empty = document.createElement('div');
+    empty.className = 'rank-empty';
+    empty.textContent = '아직 기록이 없습니다. 첫 골을 넣고 1위를 차지하세요!';
+    panel.appendChild(empty);
+  } else {
+    var cols = document.createElement('div');
+    cols.className = 'rank-cols';
+    ['#', '아이디', '점수', '득점', '등급'].forEach(function (t, i) {
+      var c = document.createElement(i ? 'i' : 'span');
+      c.textContent = t;
+      cols.appendChild(c);
+    });
+    panel.appendChild(cols);
+
+    var rows = document.createElement('div');
+    rows.className = 'rank-rows';
+    var list = RANK.entries;
+    var shown = Math.min(list.length, 10);
+    for (var i = 0; i < shown; i++) rows.appendChild(rankRowEl(list[i], i));
+    var mine = RANK.myNick ? rankIndexOf(list, RANK.myNick) : -1;
+    if (mine >= 10) {
+      var gap = document.createElement('div');
+      gap.className = 'rank-gap';
+      gap.textContent = '•••';
+      rows.appendChild(gap);
+      rows.appendChild(rankRowEl(list[mine], mine));
+    }
+    panel.appendChild(rows);
+  }
+
+  var foot = document.createElement('div');
+  foot.className = 'rank-foot';
+  var n = RANK.entries.length;
+  if (RANK.online === true) {
+    foot.textContent = '전체 ' + n + '명 · 친구 폰에서도 같은 순위로 보입니다';
+  } else if (RANK.online === false) {
+    foot.textContent = '이 기기 기록 ' + n + '개 · 온라인 연결 실패(' + (RANK.err || '네트워크') + ') · 기록은 폰에 저장되고 연결되면 다시 합쳐집니다';
+  } else {
+    foot.textContent = n ? '이 기기 기록 ' + n + '개 · 온라인 연결 중…' : '점수를 내면 랭킹에 올라갑니다';
+  }
+  panel.appendChild(foot);
+}
+
+function rankRender() {
+  if (RANK.myNick && el.nick && nickClean(el.nick.value) && nickClean(el.nick.value) !== RANK.myNick) {
+    RANK.myNick = nickClean(el.nick.value);
+  }
+  rankBuildPanel(el.rankStart);
+  rankBuildPanel(el.rankEnd);
+
+  if (!el.myRank) return;
+  var list = RANK.entries;
+  var nick = RANK.myNick || nickCurrent();
+  var idx = rankIndexOf(list, nick);
+  while (el.myRank.firstChild) el.myRank.removeChild(el.myRank.firstChild);
+  if (G.state !== 'over' || idx < 0) {
+    el.myRank.classList.add('hidden');
+    return;
+  }
+  el.myRank.classList.remove('hidden');
+  var lbl = document.createElement('span');
+  lbl.textContent = '내 순위';
+  var b = document.createElement('b');
+  b.textContent = (idx + 1) + '위';
+  var sub = document.createElement('span');
+  sub.className = 'sub2';
+  sub.textContent = '/ ' + list.length + '명' + (RANK.busy ? ' · 동기화 중…' : (RANK.online === false ? ' · 기기 기록' : ''));
+  el.myRank.appendChild(lbl); el.myRank.appendChild(b); el.myRank.appendChild(sub);
+}
+
+/* ---------- nickname field ---------- */
+function nickFieldSync() {
+  if (!el.nick) return;
+  if (el.nickCount) el.nickCount.textContent = nickClean(el.nick.value).length + '/12';
+}
+
+/* ---------- toast ---------- */
+var toastTimer = 0;
+function toast(msg) {
+  if (!el.toast) return;
+  el.toast.textContent = msg;
+  el.toast.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.toast.classList.remove('on'); }, 2000);
+}
+
+/* ---------- challenge link (?challenger=..&score=..) ---------- */
+function readChallenge() {
+  try {
+    var q = new URLSearchParams(window.location.search || '');
+    var n = nickClean(q.get('challenger') || '');
+    var s = parseInt(q.get('score'), 10);
+    if (!n || !isFinite(s) || s < 0) return null;
+    return { n: n, s: Math.min(s, 999999) };
+  } catch (e) { return null; }
+}
+
+function showChallenge(c) {
+  if (!el.challenge || !c) return;
+  while (el.challenge.firstChild) el.challenge.removeChild(el.challenge.firstChild);
+  var vs = document.createElement('span');
+  vs.className = 'vs';
+  vs.textContent = 'CHALLENGE';
+  var p = document.createElement('div');
+  var who = document.createElement('b');
+  who.textContent = c.n;
+  p.appendChild(who);
+  p.appendChild(document.createTextNode('님의 도전장 · ' + c.s + '점'));
+  el.challenge.appendChild(vs);
+  el.challenge.appendChild(p);
+  var hint = document.createElement('div');
+  hint.style.marginTop = '3px';
+  hint.style.fontSize = '10px';
+  hint.style.color = '#8fe3f6';
+  hint.textContent = '이 점수를 넘으면 네가 위! 60초 안에 도전하세요';
+  el.challenge.appendChild(hint);
+  el.challenge.classList.remove('hidden');
+}
+
+function legacyCopy(txt) {
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, txt.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) { return false; }
+}
+
+function copyText(txt) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(txt).then(function () { return true; }, function () { return legacyCopy(txt); });
+  }
+  return Promise.resolve(legacyCopy(txt));
+}
+
+function shareChallenge() {
+  var nick = G.nick || nickCurrent();
+  var url = window.location.origin + window.location.pathname +
+    '?challenger=' + encodeURIComponent(nick) + '&score=' + (G.score || 0);
+  copyText(url).then(function (ok) {
+    if (ok) toast('도전장 링크를 복사했어요 · 친구에게 보내보세요');
+    else toast('복사 실패 · 주소창 링크를 복사해 주세요');
+  });
+}
+
+/* ============================================================
    12. boot
    ============================================================ */
 function initMenu() {
@@ -2030,6 +2546,7 @@ function boot() {
 
   if (el.start) el.start.addEventListener('click', function (e) {
     if (e.target === el.mute) return;
+    if (e.target.closest && e.target.closest('.nodismiss')) return;
     startGame();
   });
   if (el.startBtn) el.startBtn.addEventListener('click', function (e) {
@@ -2040,6 +2557,48 @@ function boot() {
     e.stopPropagation();
     startGame();
   });
+  if (el.shareBtn) el.shareBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    shareChallenge();
+  });
+  if (el.rankOpenBtn) el.rankOpenBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    rankFetch();
+    toast('랭킹을 새로 불러오는 중…');
+  });
+
+  if (el.nick) {
+    el.nick.value = nickClean(load(NICK_KEY, ''));
+    nickFieldSync();
+    el.nick.addEventListener('input', function () {
+      nickFieldSync();
+      var v = nickClean(el.nick.value);
+      if (v) nickRemember(v);
+      rankRender();
+    });
+    el.nick.addEventListener('change', function () {
+      el.nick.value = nickClean(el.nick.value);
+      nickFieldSync();
+      nickRemember(nickCurrent());
+      rankRender();
+    });
+    el.nick.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); el.nick.blur(); startGame(); }
+    });
+    ['pointerdown', 'click', 'touchstart'].forEach(function (evt) {
+      el.nick.addEventListener(evt, function (e) { e.stopPropagation(); }, { passive: true });
+    });
+  }
+
+  RANK.myNick = nickClean(RANK.myNick || load(NICK_KEY, ''));
+  RANK.entries = rankNormalize(rankLoadLocal());
+  rankRender();
+  rankFetch();
+
+  var ch = readChallenge();
+  if (ch) showChallenge(ch);
   if (el.mute) el.mute.addEventListener('click', function (e) {
     e.stopPropagation();
     toggleMute();
@@ -2058,8 +2617,11 @@ if (document.readyState === 'loading') {
 window.__FK = {
   G: G, ball: ball, cam: cam, drag: drag, keeper: keeper, wall: wall,
   gold: gold, wind: wind, popups: popups, particles: particles, Sound: Sound,
-  startGame: startGame, nextShot: nextShot, beginShot: beginShot,
+  RANK: RANK,
+  startGame: startGame, endGame: endGame, nextShot: nextShot, beginShot: beginShot,
   computeShot: computeShot, proj: proj, resize: resize,
+  rankRender: rankRender, rankFetch: rankFetch, rankSubmit: rankSubmit,
+  rankNormalize: rankNormalize, readChallenge: readChallenge,
   setSize: function (w, h) { W = w; H = h; resize(); }
 };
 
